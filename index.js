@@ -42,7 +42,7 @@ const validateNumber = (number) => {
         (n) => /\s/.test(n),            // Test for Contains spaces
         (n) => /\./.test(n),            // Test for Floating point numbers
         (n) => /[a-zA-Z]/.test(n),      // Test for Alphabets
-        (n) => /[-+*/]/.test(n),        // Test for Mathematical operators
+        
         (n) => /[^0-9]/.test(n),        // Test for Special characters
         (n) => Number(n) > Number.MAX_SAFE_INTEGER, // Test for Number greater than MAX_SAFE_INTEGER
     ];
