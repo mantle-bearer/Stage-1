@@ -47,7 +47,7 @@ const validateNumber = (number) => {
         (n) => Number(n) > Number.MAX_SAFE_INTEGER, // Test for Number greater than MAX_SAFE_INTEGER
     ];
 
-    return rules.some((test) => test(number)) ? { number: "Invalid input. Accepts only numbers", error: true } : null;
+    return rules.some((test) => test(number)) ? { number: "alphabet", error: true } : null;
 
 };
 
