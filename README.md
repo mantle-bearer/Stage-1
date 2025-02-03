@@ -71,25 +71,7 @@ This is a simple API that classifies numbers based on their mathematical propert
 
 ```json
 {
-  "number": "alphabet",
-  "error": true
-}
-```
-
-#### 🔴 **Mathematical Operators Not Allowed**
-
-```json
-{
-  "number": "no mathematical operators allowed",
-  "error": true
-}
-```
-
-#### 🔴 **Too Large Number**
-
-```json
-{
-  "number": "too large",
+  "number": "Invalid Input. Accepts only numbers",
   "error": true
 }
 ```
@@ -106,8 +88,8 @@ This API is deployed on **Vercel**. You can access it at:
 ## 👨‍💻 Author
 
 - **Your Name**
-- GitHub: [@yourusername](https://github.com/mantle-bearer)
-- Twitter: [@yourhandle](https://twitter.com/demantlebearer)
+- GitHub: [@mantle-bearer](https://github.com/mantle-bearer)
+- Twitter: [@demantlebearer](https://twitter.com/demantlebearer)
 
 ---
 
