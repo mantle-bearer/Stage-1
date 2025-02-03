@@ -3,15 +3,21 @@ const axios = require("axios");
 
 const app = express();
 
-// Utility Functions for Number Classification, isPrime, isPerfect, isArmstrong, getDigitSum
+// Cache for fun facts
+const funFactCache = {};
+
+// Optimized Prime Check
 const isPrime = (num) => {
     if (num < 2) return false;
-    for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num === 2) return true; // Skip even numbers after 2
+    if (num % 2 === 0) return false;
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
         if (num % i === 0) return false;
     }
     return true;
 };
 
+// Optimized Perfect Number Check
 const isPerfect = (num) => {
     let sum = 1;
     for (let i = 2; i <= Math.sqrt(num); i++) {
@@ -23,68 +29,46 @@ const isPerfect = (num) => {
     return sum === num && num !== 1;
 };
 
+// Optimized Armstrong Check
 const isArmstrong = (num) => {
     const digits = num.toString().split("").map(Number);
     const sum = digits.reduce((acc, digit) => acc + Math.pow(digit, digits.length), 0);
     return sum === num;
 };
 
-const getDigitSum = (num) => {
-    return num.toString().split("").reduce((sum, digit) => sum + Number(digit), 0);
-};
+// Digit sum remains the same as it's already efficient
+const getDigitSum = (num) => num.toString().split("").reduce((sum, digit) => sum + Number(digit), 0);
 
 // API Route
 app.get("/api/classify-number", async (req, res) => {
-
     const { number } = req.query;
 
-    // Check if number is missing or empty
-    if (!number || number.trim() === "") {
-        return res.status(400).json({ number: "missing number parameter", error: true });
+    // Combined Validation
+    if (!/^\d+$/.test(number)) {
+        return res.status(400).json({ number: "invalid input", error: true });
     }
-
-    // Check if input contains spaces
-    if (/\s/.test(number)) {
-        return res.status(400).json({ number: "no spaces allowed", error: true });
-    }
-
-    // Check if input is a floating point number
-    if (/\./.test(number)) {
-        return res.status(400).json({ number: "only integers allowed", error: true });
-    }
-
-    // Check if input contains alphabets
-    if (/[a-zA-Z]/.test(number)) {
-        return res.status(400).json({ number: "alphabet", error: true });
-    }
-
-    // Check if input contains special characters
-    if (/[^0-9]/.test(number)) {
-        // If it contains mathematical operators
-        if (/[-+*/]/.test(number)) {
-            return res.status(400).json({ number: "no mathematical operators allowed", error: true });
-        }
-        return res.status(400).json({ number: "invalid characters", error: true });
-    }
-
-    // Check if number is too large
-    if (Number(number) > Number.MAX_SAFE_INTEGER) {
-        return res.status(400).json({ number: "too large", error: true });
-    }
-    
 
     const num = Number(number);
+
+    if (num > Number.MAX_SAFE_INTEGER) {
+        return res.status(400).json({ number: "too large", error: true });
+    }
+
     const properties = [];
     if (isArmstrong(num)) properties.push("armstrong");
     properties.push(num % 2 === 0 ? "even" : "odd");
 
-    // Fetch Fun Fact
-    let funFact = "Fun fact not found";
-    try {
-        const response = await axios.get(`http://numbersapi.com/${num}/math?json`);
-        funFact = response.data.text;
-    } catch (error) {
-        console.error("Error fetching fun fact:", error.message);
+    // Use Cache for Fun Fact
+    let funFact = funFactCache[num] || "Fun fact not found";
+    if (!funFactCache[num]) {
+        try {
+            const response = await axios.get(`http://numbersapi.com/${num}/math?json`);
+            funFact = response.data.text;
+            // Cache the result
+            funFactCache[num] = funFact;
+        } catch (error) {
+            console.error("Error fetching fun fact:", error.message);
+        }
     }
 
     res.json({
@@ -104,4 +88,4 @@ module.exports = app;
 if (require.main === module) {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-} 
+}

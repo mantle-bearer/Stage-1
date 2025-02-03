@@ -99,7 +99,7 @@ This is a simple API that classifies numbers based on their mathematical propert
 ## 🚀 Deployment
 
 This API is deployed on **Vercel**. You can access it at:  
-👉 [Live Demo](https://your-vercel-app.vercel.app/api/classify-number?number=371)
+👉 [Live Demo](https://stage-1-xi.vercel.app/api/classify-number?number=371)
 
 ---
 
