@@ -4,7 +4,7 @@ const axios = require("axios");
 
 const app = express();
 
-// Utility Functions
+// Utility Functions for Number Classification, isPrime, isPerfect, isArmstrong, getDigitSum
 const isPrime = (num) => {
     if (num < 2) return false;
     for (let i = 2; i <= Math.sqrt(num); i++) {
@@ -42,12 +42,10 @@ const validateNumber = (number) => {
         (n) => /\s/.test(n),            // Test for Contains spaces
         (n) => /\./.test(n),            // Test for Floating point numbers
         (n) => /[a-zA-Z]/.test(n),      // Test for Alphabets
-        
-        (n) => /[^0-9]/.test(n),        // Test for Special characters
         (n) => Number(n) > Number.MAX_SAFE_INTEGER, // Test for Number greater than MAX_SAFE_INTEGER
     ];
 
-    return rules.some((test) => test(number)) ? { number: "Invalid input. Accepts only numbers", error: true } : null;
+    return rules.some((test) => test(number)) ? { number: "alphabet", error: true } : null;
 
 };
 

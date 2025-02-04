@@ -71,7 +71,7 @@ This is a simple API that classifies numbers based on their mathematical propert
 
 ```json
 {
-  "number": "Invalid Input. Accepts only numbers",
+  "number": "alphabet",
   "error": true
 }
 ```
